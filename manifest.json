@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Volume Control",
+  "version": "1.0",
+  "description": "Allows volume control of audio and video elements in browser tabs.",
+  "homepage_url": "https://github.com/Abev08/VolumeControlExtension",
+  "icons": {
+    "32": "icons/icon_32.png",
+    "64": "icons/icon_64.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "32": "icons/icon_32.png",
+      "64": "icons/icon_64.png"
+    },
+    "default_title": "Volume Control",
+    "default_popup": "index.html"
+  }
+}

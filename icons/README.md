@@ -1,0 +1,1 @@
+[Volume icon created by Aldo Cervantes - Flaticon](https://www.flaticon.com/free-icon/high-volume_2326211 "volume icon")
