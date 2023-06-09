@@ -1,0 +1,8 @@
+[09.06.2023] v1.0.1
+ - Fix: Volume jump on youtube videos when volume was set on youtube player and then scrolled down (without opening the extension),
+ - Fix: Youtube shorts - volume not set when going to next or previous,
+ - Fix: Instagram stories - volume set on one story doesn't transition to next one.
+  -- Works only if there is video after video (any moving thing is enough, it doesn't have to be real video) - image / photo between videos breaks it.
+
+[08.06.2023] v1.0
+ - Initial release
