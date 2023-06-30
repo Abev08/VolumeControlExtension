@@ -1,3 +1,9 @@
+[30.06.2023] v1.0.2
+ - Fix: Volume change event on video / audio element now correctly updates volume value remembered in extension,
+ - Fix: Volume value when looking at muted video / audio element was incorrect,
+ - Added: Controlling muted flag of video / audio element when setting volume value to 0 or from 0 in extension,
+ - Attempt: Updating volume sliders on video elements (Twitch and Youtube) but not working yet. Values on html elements are updated but visuals are not.
+
 [09.06.2023] v1.0.1
  - Fix: Volume jump on youtube videos when volume was set on youtube player and then scrolled down (without opening the extension),
  - Fix: Youtube shorts - volume not set when going to next or previous,

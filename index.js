@@ -31,7 +31,7 @@ function setVolume() {
     .sendMessage(currentTabID, {
       extension: "volumeControl",
       action: "setVolume",
-      value: volumeSlider.value / 100.0
+      value: (volumeSlider.value / 100.0).toFixed(2)
     })
     .catch((error) => { console.log(error); });
 
