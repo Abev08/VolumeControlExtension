@@ -76,9 +76,8 @@ function getVolume() {
   elements = document.querySelectorAll("video, audio");
   if (elements.length > 0) {
     if (!setAtLeastOnce) {
-      // Assume that first element on website has correct volume}
-      if (elements[0].muted) tabVol = 0;
-      else tabVol = parseFloat(elements[0].volume).toFixed(2);
+      // Assume that first element on website has correct volume
+      tabVol = parseFloat(elements[0].volume).toFixed(2);
     }
     elements.forEach((element) => {
       // Try catch everywhere because not every website allows adding listeners to video / audio elements?
