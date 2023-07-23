@@ -1,5 +1,6 @@
 let setAtLeastOnce = false;
 let tabVol = 1.0;
+let mediaElements = new Array();
 
 let lastScrollPosition = 0;
 document.addEventListener("scroll", (event) => {
@@ -21,10 +22,10 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 function setVolume(value, updateMutedFlag = false) {
-  tabVol = parseFloat(value).toFixed(2);
+  tabVol = parseFloat(value).toFixed(3);
   elements = document.querySelectorAll("video, audio, [id=movie_player], [id^=player-volume-slider], [class^=ytp-volume-panel]");
   elements.forEach((element) => {
-    if (element.tagName == "VIDEO" || element.tagName == "AUDIO") {
+    if (element.tagName.toLowerCase() == "video" || element.tagName.toLowerCase() == "audio") {
       element.volume = tabVol;
       // Unmute / mute only elements that are not paused - I don't want to unmute something somewhere in the page that shouldn't be playing
       if (updateMutedFlag && !element.paused) {
@@ -32,15 +33,8 @@ function setVolume(value, updateMutedFlag = false) {
         if (tabVol == 0) element.muted = true;
         else element.muted = false;
       }
-      // Try catch everywhere because not every website allows adding listeners to video / audio elements?
-      // Attach listeners when document content changed to update new video and audio controls
-      // YouTube shorts - assign new video previously set tab volume
-      try { element.addEventListener("loadedmetadata", (event) => { event.target.volume = tabVol; }); }
-      catch { }
-      // Instagram stories - previous video ended and new is loaded
-      try { element.addEventListener("emptied", (event) => { setVolume(tabVol) }); }
-      catch { }
-    } else if (element.id == "movie_player") {
+      addEventlisteners(element);
+    } else if (element.id.toLowerCase() == "movie_player") {
       // YouTube stream
       try {
         // Something about extension not running in the same enviroment as YouTube API and not working,
@@ -77,16 +71,50 @@ function getVolume() {
   if (elements.length > 0) {
     if (!setAtLeastOnce) {
       // Assume that first element on website has correct volume
-      tabVol = parseFloat(elements[0].volume).toFixed(2);
+      tabVol = parseFloat(elements[0].volume).toFixed(3);
     }
-    elements.forEach((element) => {
-      // Try catch everywhere because not every website allows adding listeners to video / audio elements?
-      // Standard volume change event on player - set volume remembered by extension from volume change on player
-      try { element.addEventListener("volumechange", (event) => { tabVol = parseFloat(event.target.volume).toFixed(2); }); }
-      catch { } // Do nothing?
-    });
 
     setVolume(tabVol);
   }
   setAtLeastOnce = true;
+}
+
+function loadedMetaDataEvent(event) {
+  event.target.volume = tabVol;
+}
+
+function emptiedEvent(event) {
+  // If the media element is empited it no longer is being used? Clear previous events. Just to be sure clear everything.
+  while (mediaElements.length > 0) {
+    let element = mediaElements.pop();
+    try { element.removeEventListener("empited", emptiedEvent); }
+    catch { }
+    try { element.removeEventListener("loadedmetadata", loadedMetaDataEvent); }
+    catch { }
+    try { element.removeEventListener("loadedmetadata", volumeChangeEvent); }
+    catch { }
+  }
+
+  // Set media elements volume - if emptied element was replaced with some other
+  setVolume(tabVol);
+}
+
+function volumeChangeEvent(event) {
+  tabVol = parseFloat(event.target.volume).toFixed(3);
+}
+
+function addEventlisteners(element) {
+  if (!mediaElements.includes(element)) {
+    mediaElements.push(element);
+    // Try catch everywhere because not every website allows adding listeners to video / audio elements?
+    // Attach listeners when document content changed to update new video and audio controls
+    try { element.addEventListener("volumechange", volumeChangeEvent); }
+    catch { }
+    // YouTube shorts - assign new video previously set tab volume
+    try { element.addEventListener("loadedmetadata", loadedMetaDataEvent); }
+    catch { }
+    // Instagram stories - previous video ended and new is loaded
+    try { element.addEventListener("emptied", emptiedEvent); }
+    catch { }
+  }
 }

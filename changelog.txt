@@ -1,3 +1,6 @@
+[23.07.2023] v1.0.5
+ - Fix: Bug allowing to add multiple event listeners of the same type to single media element. This decreased performance of the web browser.
+
 [06.07.2023] v1.0.4
  - Fix: When the extension is first opened, it reads the volume of the first media element present on the page. If this item is muted, the volume in the extension will be set to 0.
         For this reason, the volume of the rest of the media elements present on the page would be set to 0. Removed this feature, it was supposed to be useful but turned out to be annoying.
