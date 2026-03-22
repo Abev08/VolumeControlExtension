@@ -1,3 +1,9 @@
+[22.03.2026] v1.0.6
+ - Fix: Fixed YouTube shorts volume resetting to previous one when switching to next short (still doesn't work when scrolling up),
+ - Changed the way volume gets set by the extension,
+   maybe this way it will be less susceptible to changes on the websites,
+   maybe this will break everything.
+
 [23.07.2023] v1.0.5
  - Fix: Bug allowing to add multiple event listeners of the same type to single media element. This decreased performance of the web browser.
 
