@@ -1,3 +1,6 @@
+[24.03.2026] v1.0.7
+ - Maybe fixed bugs introduced in previous changes.
+
 [22.03.2026] v1.0.6
  - Fix: Fixed YouTube shorts volume resetting to previous one when switching to next short (still doesn't work when scrolling up),
  - Changed the way volume gets set by the extension,
